@@ -2,8 +2,21 @@ from fastapi import FastAPI
 from operations.router import router_department as router_departments
 from operations.router import router_user as router_users
 from operations.router import router_task as router_task
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title='BT-24 API')
+
+origins = [
+    '*',
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get('/', include_in_schema=False)

@@ -1,8 +1,14 @@
 from sqlalchemy import Column, Integer, Boolean, String, ForeignKey, UniqueConstraint, Index, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy_serializer import SerializerMixin
 
-Base = declarative_base()
+
+# Base = declarative_base()
+
+class Base(DeclarativeBase, SerializerMixin):
+    pass
 
 
 class User(Base):
@@ -26,7 +32,13 @@ class User(Base):
     )
 
     def __repr__(self):
-        return f'({self.id}) {self.name}'
+        return f'({self.id}) {self.name} {self.last_name}'
+
+    def dump_to_json(self):
+        item = {}
+        for column in self.__table__.columns:
+            item[column.name] = str(getattr(self, column.name))
+        return item
 
 
 class Department(Base):
