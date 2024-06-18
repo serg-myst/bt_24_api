@@ -82,7 +82,6 @@ class User(BaseModel):
     email: Annotated[str | None, Field(alias='EMAIL')] = ''
     photo: Annotated[str | None, Field(alias='PERSONAL_PHOTO')] = None
     is_active: bool = Field(alias='ACTIVE')
-    tasks: Optional[List[Task]] = []
 
     # department_id: List = Field(alias='UF_DEPARTMENT')
 

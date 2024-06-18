@@ -1,7 +1,7 @@
 import asyncio
 import aiohttp
 from config import URL
-from .get_params import Params
+from get_params import Params
 from schemas.schemas import User
 from pydantic import ValidationError
 
