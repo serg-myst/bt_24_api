@@ -1,4 +1,4 @@
-from config import URL
+from config import URL, TASK_FIELDS
 from schemas.schemas import Task
 from pydantic import ValidationError
 from .get_params import Params
@@ -44,10 +44,7 @@ async def get_user_tasks_by_parameters(session, params: dict, user):
 def init_params(user_id: int, date1: str, date2: str) -> list:
     param_list = []
     params = {}
-
-    fields = ["ID", "TITLE", "STATUS", "CREATED_DATE", "CREATED_BY", "CLOSED_DATE", "DEADLINE", "DESCRIPTION"]
-
-    task_closed_params = Params(fields, params)
+    task_closed_params = Params(TASK_FIELDS, params)
     task_closed_params.add_select()
     task_closed_params.add_filter('RESPONSIBLE_ID', user_id)
     task_closed_params.add_filter('>REAL_STATUS', 4)
@@ -58,7 +55,7 @@ def init_params(user_id: int, date1: str, date2: str) -> list:
 
     param_list.append(task_closed_params)
 
-    task_in_work_params = Params(fields, params)
+    task_in_work_params = Params(TASK_FIELDS, params)
     task_in_work_params.add_select()
     task_in_work_params.add_filter('RESPONSIBLE_ID', user_id)
     task_in_work_params.add_filter('<=REAL_STATUS', 4)
@@ -66,7 +63,7 @@ def init_params(user_id: int, date1: str, date2: str) -> list:
 
     param_list.append(task_in_work_params)
 
-    task_deferred_params = Params(fields, params)
+    task_deferred_params = Params(TASK_FIELDS, params)
     task_deferred_params.add_select()
     task_deferred_params.add_filter('RESPONSIBLE_ID', user_id)
     task_deferred_params.add_filter('=REAL_STATUS', 6)
@@ -74,7 +71,7 @@ def init_params(user_id: int, date1: str, date2: str) -> list:
 
     param_list.append(task_deferred_params)
 
-    task_declined_params = Params(fields, params)
+    task_declined_params = Params(TASK_FIELDS, params)
     task_declined_params.add_select()
     task_declined_params.add_filter('RESPONSIBLE_ID', user_id)
     task_declined_params.add_filter('=REAL_STATUS', 7)

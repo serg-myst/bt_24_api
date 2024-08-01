@@ -28,6 +28,14 @@ class Task(BaseModel):
     createdDate: datetime
     closedDate: Optional[datetime] = EMPTY_DATE
     deadline: Optional[datetime] = EMPTY_DATE
+    startDatePlan: Optional[datetime] = EMPTY_DATE
+    endDatePlan: Optional[datetime] = EMPTY_DATE
+    timeEstimate: Optional[int] = 0
+    priority: Optional[int] = 0
+
+    @field_validator('timeEstimate')
+    def set_time_ours(cls, t: int) -> int:
+        return int(t / 3600)
 
     @field_validator('status')
     def set_status(cls, s: int) -> str:

@@ -19,3 +19,5 @@ DB_USER = os.environ.get('DB_USER')
 DB_PASS = os.environ.get('DB_PASS')
 
 EMPTY_DATE = datetime.strptime('01.01.2000 00:00:00', '%d.%m.%Y %H:%M:%S')
+TASK_FIELDS = ["ID", "TITLE", "STATUS", "CREATED_DATE", "CREATED_BY", "CLOSED_DATE", "DEADLINE",
+               "START_DATE_PLAN", "END_DATE_PLAN", "TIME_ESTIMATE", "PRIORITY"]

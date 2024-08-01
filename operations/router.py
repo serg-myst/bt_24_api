@@ -14,6 +14,7 @@ from schemas.schemas import UserTasks
 from services.get_tasks_async import get_tasks_by_parameters, gather_tasks
 from pydantic import ValidationError
 from pprint import pprint
+from config import TASK_FIELDS
 
 router_department = APIRouter(
     prefix='/departments',
@@ -97,9 +98,8 @@ async def get_departments(department_id: int, session: AsyncSession = Depends(ge
 
 @router_task.get('/tasks-in-work/{user_id}')
 async def get_tasks_in_work(user_id: int):
-    fields = ["ID", "TITLE", "STATUS", "CREATED_DATE", "CREATED_BY", "CLOSED_DATE", "DEADLINE"]
     params = {}
-    task_params = Params(fields, params)
+    task_params = Params(TASK_FIELDS, params)
     task_params.add_select()
     task_params.add_filter('RESPONSIBLE_ID', user_id)
     task_params.add_filter('<=REAL_STATUS', 4)
@@ -116,9 +116,8 @@ async def get_tasks_in_work(user_id: int):
 
 @router_task.post('/tasks-closed/')
 async def get_tasks_closed(request_params: CloseTaskParams):
-    fields = ["ID", "TITLE", "STATUS", "CREATED_DATE", "CREATED_BY", "CLOSED_DATE", "DEADLINE"]
     params = {}
-    task_params = Params(fields, params)
+    task_params = Params(TASK_FIELDS, params)
     task_params.add_select()
     task_params.add_filter('RESPONSIBLE_ID', request_params.user_id)
     task_params.add_filter('>REAL_STATUS', 4)
@@ -138,9 +137,8 @@ async def get_tasks_closed(request_params: CloseTaskParams):
 
 @router_task.get('/tasks-deferred/{user_id}')
 async def get_tasks_in_work(user_id: int):
-    fields = ["ID", "TITLE", "STATUS", "CREATED_DATE", "CREATED_BY", "CLOSED_DATE", "DEADLINE"]
     params = {}
-    task_params = Params(fields, params)
+    task_params = Params(TASK_FIELDS, params)
     task_params.add_select()
     task_params.add_filter('RESPONSIBLE_ID', user_id)
     task_params.add_filter('=REAL_STATUS', 6)
