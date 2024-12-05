@@ -111,5 +111,33 @@ def get_task_list(content: list, result: list) -> list:
     return result
 
 
+async def get_auditor_tasks_by_params(session, auditor: int, start: int, tasks_list: list) -> int:
+    params = {}
+    auditor_params = Params(TASK_FIELDS, params, start)
+    auditor_params.add_select()
+    auditor_params.add_filter('AUDITOR', auditor)
+    auditor_params.add_filter('<=REAL_STATUS', 4)
+    auditor_params.add_order('CREATED_DATE', 'asc')
+    auditor_params.add_pagination()
+    params = auditor_params.get_params()
+
+    method = 'tasks.task.list'
+
+    async with session.request(method='get', url=f'{URL}/{method}', params=params) as response:
+        if response.status == 200:
+            content = await response.json()
+            tasks = get_content(content)
+            tasks_list = get_task_list(tasks, tasks_list)
+
+            if 'next' in content:
+                await get_auditor_tasks_by_params(session, auditor, content.get('next'), tasks_list)
+
+            return response.status
+
+        else:
+            print(f'Ошибка получения данных методом {method}. Статус {response.status_code}')
+            return response.status
+
+
 if __name__ == '__main__':
     ...

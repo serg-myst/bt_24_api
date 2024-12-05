@@ -6,6 +6,7 @@ from database.database import async_session_maker
 from sqlalchemy.exc import SQLAlchemyError
 from models.models import Department, User, DepartmentHead
 import asyncio
+from pprint import pprint
 
 
 async def save_data(item, table, id, session):
@@ -44,7 +45,7 @@ async def get_data():
     async with async_session_maker() as session:
         for head in department_head_list:
             if head.user_id != 0:
-                await save_data(head.model_dump(), DepartmentHead, ['id'], session)
+                await save_data(head.model_dump(), DepartmentHead, ['department_id'], session)
 
         await session.commit()
 

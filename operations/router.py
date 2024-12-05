@@ -11,7 +11,7 @@ from schemas.schemas import CloseTaskParams
 from services.get_params import Params
 import aiohttp
 from schemas.schemas import UserTasks
-from services.get_tasks_async import get_tasks_by_parameters, gather_tasks
+from services.get_tasks_async import get_tasks_by_parameters, gather_tasks, get_auditor_tasks_by_params
 from pydantic import ValidationError
 from pprint import pprint
 from config import TASK_FIELDS
@@ -94,6 +94,26 @@ async def get_departments(department_id: int, session: AsyncSession = Depends(ge
         'details': '',
         'data': result.all()
     }
+
+
+@router_task.get('/auditor-tasks/{auditor_id}')
+async def get_auditor_tasks(auditor_id: int):
+    async with aiohttp.ClientSession() as session:
+        tasks_list = []
+        status = await get_auditor_tasks_by_params(session, auditor_id, 0, tasks_list)
+
+        if status == 200:
+            return {
+                'status': status,
+                'details': '',
+                'data': [task.model_dump() for task in tasks_list]
+            }
+        else:
+            return {
+                'status': status,
+                'details': '',
+                'data': ''
+            }
 
 
 @router_task.get('/tasks-in-work/{user_id}')
