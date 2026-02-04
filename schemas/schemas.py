@@ -6,22 +6,22 @@ from config import EMPTY_DATE
 
 
 class Department(BaseModel):
-    id: int = Field(alias='ID')
-    name: str = Field(alias='NAME')
-    parent: Annotated[int | None, Field(alias='PARENT')] = None
-    sort: int = Field(alias='SORT')
+    id: int = Field(alias="ID")
+    name: str = Field(alias="NAME")
+    parent: Annotated[int | None, Field(alias="PARENT")] = None
+    sort: int = Field(alias="SORT")
 
     # uf_head: Annotated[int | None, Field(alias='UF_HEAD')] = None
 
     def __repr__(self):
-        return f'({self.id} {self.name})'
+        return f"({self.id} {self.name})"
 
 
 class Task(BaseModel):
     id: int
     status: int
-    status_btx: int = Field(alias='status')
-    status_real: int = Field(alias='status')
+    status_btx: int = Field(alias="status")
+    status_real: int = Field(alias="status")
     title: str
     # description: str
     creator: Dict
@@ -33,11 +33,11 @@ class Task(BaseModel):
     timeEstimate: Optional[int] = 0
     priority: Optional[int] = 0
 
-    @field_validator('timeEstimate')
+    @field_validator("timeEstimate")
     def set_time_ours(cls, t: int) -> int:
         return int(t / 3600)
 
-    @field_validator('status')
+    @field_validator("status")
     def set_status(cls, s: int) -> str:
         match s:
             case 1:
@@ -57,7 +57,7 @@ class Task(BaseModel):
             case _:
                 return "Не определено"
 
-    @field_validator('status_btx')
+    @field_validator("status_btx")
     def set_btx_status(cls, s: int) -> str:
         match s:
             case 1:
@@ -79,53 +79,53 @@ class Task(BaseModel):
 
 
 class User(BaseModel):
-    id: int = Field(alias='ID')
-    name: str = Field(alias='NAME')
-    last_name: str = Field(alias='LAST_NAME')
-    second_name: Annotated[str | None, Field(alias='SECOND_NAME')] = ''
-    work_position: Annotated[str | None, Field(alias='WORK_POSITION')] = ''
-    birthday: Annotated[str | datetime, Field(alias='PERSONAL_BIRTHDAY')]
-    date_register: datetime = Field(alias='DATE_REGISTER')
-    phone: Annotated[str | None, Field(alias='PERSONAL_MOBILE')] = ''
-    email: Annotated[str | None, Field(alias='EMAIL')] = ''
-    photo: Annotated[str | None, Field(alias='PERSONAL_PHOTO')] = None
-    is_active: bool = Field(alias='ACTIVE')
+    id: int = Field(alias="ID")
+    name: str = Field(alias="NAME")
+    last_name: str = Field(alias="LAST_NAME")
+    second_name: Annotated[str | None, Field(alias="SECOND_NAME")] = ""
+    work_position: Annotated[str | None, Field(alias="WORK_POSITION")] = ""
+    birthday: Annotated[str | datetime, Field(alias="PERSONAL_BIRTHDAY")]
+    date_register: datetime = Field(alias="DATE_REGISTER")
+    phone: Annotated[str | None, Field(alias="PERSONAL_MOBILE")] = ""
+    email: Annotated[str | None, Field(alias="EMAIL")] = ""
+    photo: Annotated[str | None, Field(alias="PERSONAL_PHOTO")] = None
+    is_active: bool = Field(alias="ACTIVE")
 
     # department_id: List = Field(alias='UF_DEPARTMENT')
 
-    @field_validator('birthday')
+    @field_validator("birthday")
     def set_date(cls, d) -> datetime:
-        if d == '':
+        if d == "":
             return EMPTY_DATE
         else:
-            return datetime.strptime(d[:-6], '%Y-%m-%dT%H:%M:%S')
+            return datetime.strptime(d[:-6], "%Y-%m-%dT%H:%M:%S")
 
-    '''
+    """
     @field_validator('department_id')
     def set_department(cls, d: List) -> int:
         if len(d) > 0:
             print(d)
             return int(d[0])
-    '''
+    """
 
     def __repr__(self):
-        return f'({self.id} {self.last_name} {self.name})'
+        return f"({self.id} {self.last_name} {self.name})"
 
 
 class UserTasks(BaseModel):
-    id: str = Field(alias='id')
-    name: str = Field(alias='name')
-    last_name: str = Field(alias='last_name')
-    second_name: Annotated[str | None, Field(alias='second_name')] = ''
+    id: str = Field(alias="id")
+    name: str = Field(alias="name")
+    last_name: str = Field(alias="last_name")
+    second_name: Annotated[str | None, Field(alias="second_name")] = ""
     tasks: Task = []
 
 
 class DepartmentHead(BaseModel):
-    department_id: int = Field(alias='ID')
-    user_id: Annotated[int, Field(alias='UF_HEAD')] = 0
+    department_id: int = Field(alias="ID")
+    user_id: Annotated[int, Field(alias="UF_HEAD")] = 0
 
     def __repr__(self):
-        return f'({self.id} {self.department_id} {self.user_id})'
+        return f"({self.id} {self.department_id} {self.user_id})"
 
 
 class ResponseAnswer(BaseModel):

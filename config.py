@@ -10,14 +10,29 @@ from _datetime import datetime
 
 load_dotenv()
 
-URL = os.environ.get('url')
+URL = os.environ.get("url")
 
-DB_HOST = os.environ.get('DB_HOST')
-DB_PORT = os.environ.get('DB_PORT')
-DB_NAME = os.environ.get('DB_NAME')
-DB_USER = os.environ.get('DB_USER')
-DB_PASS = os.environ.get('DB_PASS')
+DB_HOST = os.environ.get("DB_HOST")
+DB_PORT = os.environ.get("DB_PORT")
+DB_NAME = os.environ.get("DB_NAME")
+DB_USER = os.environ.get("DB_USER")
+DB_PASS = os.environ.get("DB_PASS")
 
-EMPTY_DATE = datetime.strptime('01.01.2000 00:00:00', '%d.%m.%Y %H:%M:%S')
-TASK_FIELDS = ["ID", "TITLE", "STATUS", "CREATED_DATE", "CREATED_BY", "CLOSED_DATE", "DEADLINE",
-               "START_DATE_PLAN", "END_DATE_PLAN", "TIME_ESTIMATE", "PRIORITY"]
+EMPTY_DATE = datetime.strptime("01.01.2000 00:00:00", "%d.%m.%Y %H:%M:%S")
+TASK_FIELDS = [
+    "ID",
+    "TITLE",
+    "STATUS",
+    "CREATED_DATE",
+    "CREATED_BY",
+    "CLOSED_DATE",
+    "DEADLINE",
+    "START_DATE_PLAN",
+    "END_DATE_PLAN",
+    "TIME_ESTIMATE",
+    "PRIORITY",
+]
+
+INTRASERVICE_USER = os.environ.get("INTRASERVICE_USER")
+INTRASERVICE_USER_PASSWORD = os.environ.get("INTRASERVICE_USER_PASSWORD")
+INTRASERVICE_URL = os.environ.get("INTRASERVICE_URL")
